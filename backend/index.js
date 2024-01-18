@@ -15,7 +15,7 @@ function convertArrayToObjects(arr) {
     type: transaction[0],
     amount: transaction[1],
     message: transaction[2],
-    address: `${transaction[3].slice(0,4)}...${transaction[3].slice(0,4)}`,
+    address: `${transaction[3].slice(0, 4)}...${transaction[3].slice(0, 4)}`,
     subject: transaction[4],
   }));
 
@@ -27,7 +27,7 @@ app.get("/getNameAndBalance", async (req, res) => {
 
   const response = await Moralis.EvmApi.utils.runContractFunction({
     chain: "0x13881",
-    address: "Your Smart Contract",
+    address: "0xD88515685751296AE8B61033F74Fd66D964C7880",
     functionName: "getMyName",
     abi: ABI,
     params: { _user: userAddress },
@@ -60,7 +60,6 @@ app.get("/getNameAndBalance", async (req, res) => {
 
   const jsonResponseHistory = convertArrayToObjects(fourResponse.raw);
 
-
   const fiveResponse = await Moralis.EvmApi.utils.runContractFunction({
     chain: "0x13881",
     address: "Your Smart Contract",
@@ -70,7 +69,6 @@ app.get("/getNameAndBalance", async (req, res) => {
   });
 
   const jsonResponseRequests = fiveResponse.raw;
-
 
   const jsonResponse = {
     name: jsonResponseName,
@@ -82,8 +80,6 @@ app.get("/getNameAndBalance", async (req, res) => {
 
   return res.status(200).json(jsonResponse);
 });
-
-
 
 Moralis.start({
   apiKey: process.env.MORALIS_KEY,
