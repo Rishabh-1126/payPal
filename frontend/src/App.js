@@ -23,7 +23,7 @@ function App() {
   const [balance, setBalance] = useState("...");
   const [dollars, setDollars] = useState("...");
   const [history, setHistory] = useState(null);
-  const [requests, setRequests] = useState({ "1": [0], "0": [] });
+  const [requests, setRequests] = useState({ 1: [0], 0: [] });
 
   function disconnectAndSetNull() {
     disconnect();
@@ -31,7 +31,7 @@ function App() {
     setBalance("...");
     setDollars("...");
     setHistory(null);
-    setRequests({ "1": [0], "0": [] });
+    setRequests({ 1: [0], 0: [] });
   }
 
   async function getNameAndBalance() {
@@ -48,7 +48,6 @@ function App() {
     setDollars(String(response.dollars));
     setHistory(response.history);
     setRequests(response.requests);
-    
   }
 
   useEffect(() => {
@@ -82,9 +81,13 @@ function App() {
               Disconnect Wallet
             </Button>
           ) : (
-            <Button type={"primary"} onClick={()=>{
-              console.log(requests); connect();
-            }}>
+            <Button
+              type={"primary"}
+              onClick={() => {
+                console.log(requests);
+                connect();
+              }}
+            >
               Connect Wallet
             </Button>
           )}
@@ -94,7 +97,10 @@ function App() {
             <>
               <div className="firstColumn">
                 <CurrentBalance dollars={dollars} />
-                <RequestAndPay requests={requests} getNameAndBalance={getNameAndBalance}/>
+                <RequestAndPay
+                  requests={requests}
+                  getNameAndBalance={getNameAndBalance}
+                />
                 <AccountDetails
                   address={address}
                   name={name}

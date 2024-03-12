@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { DollarOutlined, SwapOutlined } from "@ant-design/icons";
 import { Modal, Input, InputNumber } from "antd";
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction  } from "wagmi";
+import {
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import { polygonMumbai } from "@wagmi/chains";
 import ABI from "../abi.json";
 
@@ -14,7 +18,7 @@ function RequestAndPay({ requests, getNameAndBalance }) {
 
   const { config } = usePrepareContractWrite({
     chainId: polygonMumbai.id,
-    address: "0x9c2BF50fE982515f41C084e316801BdA8C22a902",
+    address: "0xD88515685751296AE8B61033F74Fd66D964C7880",
     abi: ABI,
     functionName: "payRequest",
     args: [0],
@@ -27,23 +31,22 @@ function RequestAndPay({ requests, getNameAndBalance }) {
 
   const { config: configRequest } = usePrepareContractWrite({
     chainId: polygonMumbai.id,
-    address: "0x9c2BF50fE982515f41C084e316801BdA8C22a902",
+    address: "0xD88515685751296AE8B61033F74Fd66D964C7880",
     abi: ABI,
     functionName: "createRequest",
     args: [requestAddress, requestAmount, requestMessage],
   });
 
-  const { write: writeRequest, data: dataRequest } = useContractWrite(configRequest);
-
+  const { write: writeRequest, data: dataRequest } =
+    useContractWrite(configRequest);
 
   const { isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-  })
+  });
 
   const { isSuccess: isSuccessRequest } = useWaitForTransaction({
     hash: dataRequest?.hash,
-  })
-
+  });
 
   const showPayModal = () => {
     setPayModal(true);
@@ -59,11 +62,11 @@ function RequestAndPay({ requests, getNameAndBalance }) {
     setRequestModal(false);
   };
 
-  useEffect(()=>{
-    if(isSuccess || isSuccessRequest){
+  useEffect(() => {
+    if (isSuccess || isSuccessRequest) {
       getNameAndBalance();
     }
-  },[isSuccess, isSuccessRequest])
+  }, [isSuccess, isSuccessRequest]);
 
   return (
     <>
@@ -98,11 +101,22 @@ function RequestAndPay({ requests, getNameAndBalance }) {
         cancelText="Cancel"
       >
         <p>Amount (Matic)</p>
-        <InputNumber value={requestAmount} onChange={(val)=>setRequestAmount(val)}/>
+        <InputNumber
+          value={requestAmount}
+          onChange={(val) => setRequestAmount(val)}
+        />
         <p>From (address)</p>
-        <Input placeholder="0x..." value={requestAddress} onChange={(val)=>setRequestAddress(val.target.value)}/>
+        <Input
+          placeholder="0x..."
+          value={requestAddress}
+          onChange={(val) => setRequestAddress(val.target.value)}
+        />
         <p>Message</p>
-        <Input placeholder="Lunch Bill..." value={requestMessage} onChange={(val)=>setRequestMessage(val.target.value)}/>
+        <Input
+          placeholder="Lunch Bill..."
+          value={requestMessage}
+          onChange={(val) => setRequestMessage(val.target.value)}
+        />
       </Modal>
       <div className="requestAndPay">
         <div
